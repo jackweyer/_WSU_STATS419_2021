@@ -1,1 +1,1 @@
-# _WSU_STATS419_2021
+# _WSU_STATS419_2021[github]

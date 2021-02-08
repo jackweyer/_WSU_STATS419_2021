@@ -1,0 +1,96 @@
+---
+title: 'R Notebook: Intro'
+author: "Jack Weyer [jack.weyer]"
+output:
+  html_document:
+    df_print: paged
+---
+For my R intro assignment I completed a series of functions to complete some very specific tasks. The first function is called 'handShake.' It takes in n handshakes and an option to plot. The function spits out an error if n is not a positive integer, a necessity when shaking hands. It calculates the amount of handshakes if each member shakes everyone else's hand once. If plotMe is 'TRUE', it draws a red circle with equidistant points signifying the amount of individuals. The points are connected, representing handshakes, and a title is displayed. The plot is a bit limited and it's important that your 'Plots' window is a square prior. It makes some really cool designs!
+
+```{r}
+library(FRACTION);
+library(plotrix);
+library(pracma);
+
+handShake = function(n=1, plotMe=FALSE)
+  {
+  if(n < 1) { stop("n must be greater than 0. We can't have negative or zero people silly! "); }  # warning
+  if(!is.wholenumber(n)) { stop("n must be an integer. People are whole!!"); }
+  h = n*(n-1)/2;
+  if(plotMe)
+    {
+   plot(0,0,type="n", main=paste0(n, " People Yields " ,h, " Handshakes"));
+    draw.circle(0,0,1,border="red",lwd=3);
+  saved=matrix(0,n,2);
+  x=0;
+  y=0;
+  for(i in 1:n){
+  x=round(cos(2*pi*i/n),digits=4);
+  y=round(sin(2*pi*i/n),digits=4);
+  points(x=x,y=y,cex=3);
+  saved[i,1]=x;
+  saved[i,2]=y;
+}
+for (source in 1:n){
+for (target in 1:n){
+segments(saved[source,1],saved[source,2],saved[target,1],saved[target,2])
+}
+}
+}
+  h;
+}
+
+```
+
+handShake(15,T)
+
+
+Next is the letterCounter function. Here is the 'guts' of the function, created as a part of the instructions to incorporate the final and rough versions of the Declaration of Independence. It's important that the text being brought in is a single cell character string. The draft is more wordy (or should I say lettery), having a greater letter count for each letter except z. Interestingly, every letter of the alphabet was represented in both documents.
+
+```{r}
+draft
+final
+str(draft)
+
+library(dplyr)
+tablo <- table(factor(unlist(strsplit(draft$V1, ""), use.names = F), levels=letters))
+tablo <- as.data.frame(tablo)
+tablo2 <- table(factor(unlist(strsplit(final$V1, ""), use.names = F), levels=letters))
+tablo2 <- as.data.frame(tablo2)
+test <- left_join(tablo, tablo2, by='Var1')
+test2 <- t(test)
+rownames(test2) <- c('Letter', 'Draft Count', 'Final Count')
+test2
+```
+
+Here is a more general form of the function.
+
+```{r}
+letterCounter = function(string)
+{
+  library(dplyr)
+  tablo <- table(factor(unlist(strsplit(string$V1, ""), use.names = F), levels=letters))
+tablo <- as.data.frame(tablo)
+tablo <- t(tablo)
+rownames(tablo) <- c('Letter', 'Draft Count', 'Final Count')
+tablo
+}
+```
+
+
+Finally, a function to compute the determinant of a 3x3 matrix. Really wish I had this during my Linear Algebra days!
+
+```{r}
+computeDeterminant = function(matrix){
+  a=matrix[1,1]; b=matrix[1,2]; c=matrix[1,3]
+  d=matrix[2,1]; e=matrix[2,2]; f=matrix[2,3]
+  g=matrix[3,1]; h=matrix[3,2]; i=matrix[3,3]
+  
+  det= a*(e*i-f*h)-b*(d*i-f*g)+c*(d*h-e*g)
+  det
+}
+mymatrix = matrix(1:9,3,3)
+computeDeterminant(mymatrix)
+
+```
+

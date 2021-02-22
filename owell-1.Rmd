@@ -1,0 +1,11 @@
+---
+title: "R Notebook"
+output: html_notebook
+author: Jack Weyer
+---
+
+```{r}
+wells
+```
+We have two dataframes withing our Well data, both within 'Saudi' and both involving data on 23 wells. 'metals' contains 21 variables, mainly with data on the average g/L of a particular dissolved metal from groundwater samples. 'chemistry' contains 26 variables, mainly measuring the mg/L physical and chemical parameters of the groundwater samples. Both data frames conclude with the coordinates, altitude, distance to the nearest fault, and geology of the well location.
+

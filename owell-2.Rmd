@@ -1,0 +1,103 @@
+---
+title: "oWell-2"
+author: "Jack Weyer"
+date: "2/21/2021"
+output: pdf_document
+---
+```{r}
+library(ggplot2)
+library(GGally)
+library(corrplot)
+chem <- owell.chemistry[,c(1:25)]
+bigcor <- cor(chem)
+```
+Latitude is most heavily correlated with fault distance (0.82).
+Longitude is most heabily correlated with well # (0.63).
+Altitude is most heavily correlated with K -- Potassium level (-0.60).
+Fault distance is most heavily correlated with Na -- Sodium level (0.88).
+```{r}
+ggplot(chem, aes(x=latitude, y=fault))+
+  geom_point()+
+  geom_smooth(method = lm)
+```
+This implies that our southern wells are typically closer to faults than northern wells. The only outlier is well 23, the only northern well not on sand, which lies on a fault.
+
+```{r}
+ggplot(chem, aes(x=longitude, y=well))+
+  geom_point()+
+  geom_smooth(method=lm)
+```
+Our eastern wells are associated with higher well numbers. This tells us next to nothing. Longitude isn't correlated with any other variable in 'chemistry' more than +/-0.40.
+
+```{r}
+ggplot(chem, aes(x=altitude.ft, y=K))+
+  geom_point()+
+  geom_smooth(method=lm)
+```
+
+Altitude is associated with Potassium levels. Higher altitude implies a lower Potassium level. 
+
+```{r}
+ggplot(chem, aes(x=fault, y=Na))+
+  geom_point()+
+  geom_smooth(method=lm)
+```
+
+Wells closer to fault lines are low in sodium. Apparently the Gulf of Aqaba has high exaporation which leads to higher salinity in the north. The north is associated with greater fault distance (see above) which may explain the sodium disparity.
+
+```{r}
+ggplot(owell.chemistry, aes(y=geology))+
+  geom_bar()
+```
+
+The most common well geologies are Sand/Clay/Gravel and Gypsum/Anhydrite. The five northwestern wells are all on Sand/Clay/Gravel.
+
+```{r}
+north <- owell.chemistry[c(18:22),c(1:25)]
+south <- owell.chemistry[c(1:17),c(1:25)]
+```
+Here we split the data into Group 1 and Group 2 wells.
+
+```{r}
+normeans <- sapply(north, mean)
+normeans
+soumeans <- sapply(south,mean)
+soumeans
+```
+
+It is apparent that location has a big impact on the state of the well.
+
+```{r}
+met <- owell.metals[,c(1:20)]
+bigcor2 <- cor(met)
+```
+On the metals side, latitude is most associated with (besides fault distance) Ba -- Barium (0.75 correlation).
+```{r}
+ggplot(met, aes(x=latitude, y=Ba))+
+  geom_point()+
+  geom_smooth(method = lm)
+```
+
+Longitude is most associated with (besides well number) Be -- Berryllium (0.58 correlation).
+```{r}
+ggplot(met, aes(x=longitude, y=Be))+
+  geom_point()+
+  geom_smooth(method = lm)
+```
+
+Altitude is most associated with B -- Boron (-0.54 correlation).
+```{r}
+ggplot(met, aes(x=altitude.ft, y=B))+
+  geom_point()+
+  geom_smooth(method = lm)
+```
+
+Fault distance is most associated with Ba -- Barium (-0.87 correlation).
+```{r}
+ggplot(met, aes(x=fault, y=Ba))+
+  geom_point()+
+  geom_smooth(method = lm)
+```
+
+
+
